@@ -110,6 +110,10 @@ class Autoloader {
 
 				// check every file
 				foreach ($its as $fullFileName => $it ) {
+					// exclude 'lib/classes/ns', as it is handled by PSR autoloader
+					if (preg_match('/ns\/Froxlor/', $it->getPathName()))
+						continue;
+
 					// does it match the Filename pattern?
 					if (preg_match("/^(class|module|interface|abstract|)\.?$class\.php$/i", $it->getFilename())) {
 						// include the file and return from the loop

@@ -5,15 +5,19 @@
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
 require_once "vendor/autoload.php";
 require_once "lib/userdata.inc.php";
 
+// add our own Doctrine annotations to AnnotationRegistry
+AnnotationRegistry::registerAutoloadNamespace('Froxlor\Annotations', array('lib/classes/ns/'));
 
-// initialize Doctrine with annotated model classes found
-// in lib/classes/db
+// create Doctrine config
 $isDevMode = true;
-$config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/classes/db"), $isDevMode, null, null, false);
+$proxyDir = null;
+$cache = null; // TODO: we should use a cache
+$config = Setup::createAnnotationMetadataConfiguration(array(), $isDevMode, $proxyDir, $cache, false);
 
 // database configuration parameters
 // taken from ../lib/userdata.inc.php
