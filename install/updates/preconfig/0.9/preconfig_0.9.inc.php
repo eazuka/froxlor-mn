@@ -654,12 +654,4 @@ function parseAndOutputPreconfig(&$has_preconfig, &$return, $current_version)
 		$question .= '<br>';
 		eval("\$return.=\"" . getTemplate("update/preconfigitem") . "\";");
 	}
-
-	if (versionInUpdate($current_version, '0.9.35-dev1')) {
-		$has_preconfig = true;
-		$description = 'This update requires a major database reorganization. You <b>MUST back up your database</b> before proceeding.';
-		$question = "I do have a current backup of the Froxlor database: " . makeyesno('current_backup_exists', '1', '0', '0') . '<br />';
-
-		eval("\$return.=\"" . getTemplate("update/preconfigitem") . "\";");
-	}
 }

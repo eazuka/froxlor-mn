@@ -92,7 +92,7 @@ function hasUpdates($to_check = null) {
 	) {
 		return true;
 	}
-	return false;
+	return MN_hasUpdates();
 }
 
 /**
@@ -187,4 +187,50 @@ function validateUpdateLogFile($filename) {
 		}
 	}
 	return '/tmp/froxlor_update.log';
+}
+
+/**
+ * get the multinode version
+ *
+ * @return mixed false if multinode is not installed, otherwise version as array (x.x.x.x)
+ *
+ */
+function MN_getVersion() {
+
+	$version = Settings::Get('multinode.version');
+
+	if (!$version) {
+		return false;
+	} else {
+		return explode('.', $version);
+	}
+}
+
+/**
+ * set the multinode version (after upgrade)
+ *
+ * @param $new_version array
+ */
+function MN_setVersion($new_version) {
+	$version = implode('.', $new_version);
+	Settings::Set('multinode.version', $version);
+}
+
+/**
+ * check multinode version
+ * @return true if there are updates to do for MultiNode, false if not
+ */
+function MN_hasUpdates() {
+	include('lib/mn-version.php');
+	$mn_version = explode('.', MULTINODE_VERSION);
+	$db_version = Settings::Get('multinode.version');
+	if (!$db_version)
+		return true;
+	$db_version = explode('.', $db_version);
+
+	for($i=0;$i<4;$i++) {
+		if ($mn_version[$i]>$db_version[$i])
+			return true;
+	}
+	return false;
 }
