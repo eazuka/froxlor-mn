@@ -1,3 +1,11 @@
+
+# Important Notice
+
+This is an experimental fork of Froxlor, and should only be used for testing, or by experienced users
+who need the extra features.
+
+All others are advised to head over to http://froxlor.org/ and get the official, supported version from there.
+
 # Froxlor
 
 The server administration software for your needs.
