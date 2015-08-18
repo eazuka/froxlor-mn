@@ -147,6 +147,11 @@ class apache extends HttpConfigBase {
 				$ipport = $row_ipsandports['ip'] . ':' . $row_ipsandports['port'];
 			}
 
+			if (!checkIPConfigured($row_ipsandports['ip'])) {
+				print "skipping unconfigured ip " . $row_ipsandports['ip'];
+				continue;
+			}
+
 			fwrite($this->debugHandler, '  apache::createIpPort: creating ip/port settings for  ' . $ipport . "\n");
 			$this->logger->logAction(CRON_ACTION, LOG_INFO, 'creating ip/port settings for  ' . $ipport);
 			$vhosts_filename = makeCorrectFile(Settings::Get('system.apacheconf_vhost') . '/10_froxlor_ipandport_' . trim(str_replace(':', '.', $row_ipsandports['ip']), '.') . '.' . $row_ipsandports['port'] . '.conf');
@@ -692,6 +697,11 @@ class apache extends HttpConfigBase {
 		$ipportlist = '';
 		$_vhost_content = '';
 		while ($ipandport = $result_stmt->fetch(PDO::FETCH_ASSOC)) {
+
+			if (!checkIPConfigured($ipandport['ip'])) {
+				// skip unconfigured IP
+				continue;
+			}
 
 			$ipport = '';
 			$domain['ip'] = $ipandport['ip'];

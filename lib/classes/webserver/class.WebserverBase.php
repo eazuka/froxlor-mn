@@ -47,6 +47,11 @@ class WebserverBase {
 		$domains = array();
 		while ($domain = $result_domains_stmt->fetch(PDO::FETCH_ASSOC)) {
 
+			if (!checkDomainIPConfigured($domain['id'])) {
+				continue;
+			}
+
+
 			// set whole domain
 			$domains[$domain['domain']] = $domain;
 			// set empty-defaults for non-ssl
