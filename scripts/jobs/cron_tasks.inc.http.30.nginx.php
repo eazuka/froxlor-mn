@@ -852,7 +852,7 @@ class nginx extends HttpConfigBase {
 		}
 
 		// if this is a parentdomain, we use this domain-name
-		if ($domain['parentdomainid'] == '0') {
+		if ($domain['parentdomainid'] == null) {
 			$alias_dir = makeCorrectDir($alias_dir.'/'.$domain['domain']);
 		} else {
 			$alias_dir = makeCorrectDir($alias_dir.'/'.$domain['parentdomain']);
@@ -887,7 +887,7 @@ class nginx extends HttpConfigBase {
 
 		$speciallogfile = '';
 		if ($domain['speciallogfile'] == '1') {
-			if ($domain['parentdomainid'] == '0') {
+			if ($domain['parentdomainid'] == null) {
 				$speciallogfile = '-' . $domain['domain'];
 			} else {
 				$speciallogfile = '-' . $domain['parentdomain'];

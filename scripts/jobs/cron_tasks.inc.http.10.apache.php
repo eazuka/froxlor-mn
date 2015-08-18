@@ -529,7 +529,7 @@ class apache extends HttpConfigBase {
 		$stats_text = '';
 
 		if ($domain['speciallogfile'] == '1') {
-			$statDomain = ($domain['parentdomainid'] == '0') ? $domain['domain'] : $domain['parentdomain'];
+			$statDomain = ($domain['parentdomainid'] == null) ? $domain['domain'] : $domain['parentdomain'];
 			if (Settings::Get('system.awstats_enabled') == '1') {
 				$stats_text .= '  Alias /awstats "' . makeCorrectFile($domain['customerroot'] . '/awstats/' . $statDomain) . '"' . "\n";
 				$stats_text .= '  Alias /awstats-icon "' . makeCorrectDir(Settings::Get('system.awstats_icons')) . '"' . "\n";
@@ -567,7 +567,7 @@ class apache extends HttpConfigBase {
 		$logfiles_text = '';
 
 		if ($domain['speciallogfile'] == '1') {
-			if ($domain['parentdomainid'] == '0') {
+			if ($domain['parentdomainid'] == null) {
 				$speciallogfile = '-' . $domain['domain'];
 			} else {
 				$speciallogfile = '-' . $domain['parentdomain'];

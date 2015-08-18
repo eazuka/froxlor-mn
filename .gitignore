@@ -1,8 +1,12 @@
 templates/*
 logs/*
+vendor/*
 install/update.log
 .buildpath
 .project
 .settings/
+composer.lock
+composer.phar
+.idea
 *.diff
 *~
