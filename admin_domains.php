@@ -1398,6 +1398,8 @@ if ($page == 'domains'
 						AND `d`.`id` = :aliasdomain
 					");
 					$aliasdomain_check = Database::pexecute_first($aliasdomain_check_stmt, array('customerid' => $customerid, 'aliasdomain' => $aliasdomain));
+				} else {
+					$aliasdomain = null;
 				}
 
 				if (count($ipandports) == 0) {
@@ -1409,7 +1411,7 @@ if ($page == 'domains'
 				}
 
 				if ($issubof <= '0') {
-					$issubof = '0';
+					$issubof = null;
 				}
 
 				if ($serveraliasoption != '1' && $serveraliasoption != '2') {
