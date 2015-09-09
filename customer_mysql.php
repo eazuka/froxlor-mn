@@ -279,8 +279,11 @@ if ($page == 'overview') {
 				}
 				Database::needRoot(false);
 
-				$mysql_add_data = include_once dirname(__FILE__).'/lib/formfields/customer/formfield.mysql.php';
-				$mysql_add_form = HTMLform2::genHTMLForm($mysql_add_data);
+				$mysql_add_data = include_once dirname(__FILE__).'/lib/formfields/customer/mysql/formfield.mysql_add.php';
+				$mysql_add_form = htmlform::genHTMLForm($mysql_add_data);
+
+				$title = $mysql_add_data['mysql_add']['title'];
+				$image = $mysql_add_data['mysql_add']['image'];
 
 				eval("echo \"" . getTemplate('mysql/mysqls_add') . "\";");
 			}
@@ -346,9 +349,11 @@ if ($page == 'overview') {
 				// don't show the selection dropdown
 				$count_mysqlservers = 1;
 
-				$result['mysql_servers'] = isset($sql_root['caption']) ?  $sql_root['caption'] : '';
-				$mysql_edit_data = include_once dirname(__FILE__).'/lib/formfields/customer/formfield.mysql.php';
-				$mysql_edit_form = HTMLform2::genHTMLForm($mysql_edit_data, $result);
+				$mysql_edit_data = include_once dirname(__FILE__).'/lib/formfields/customer/mysql/formfield.mysql_edit.php';
+				$mysql_edit_form = htmlform::genHTMLForm($mysql_edit_data);
+
+				$title = $mysql_edit_data['mysql_edit']['title'];
+				$image = $mysql_edit_data['mysql_edit']['image'];
 
 				eval("echo \"" . getTemplate('mysql/mysqls_edit') . "\";");
 			}

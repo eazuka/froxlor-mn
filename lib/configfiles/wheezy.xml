@@ -299,6 +299,16 @@ fastcgi_param  REDIRECT_STATUS    200;
 						</visibility>
 						<content><![CDATA[
 #!/bin/bash
+### BEGIN INIT INFO
+# Provides:          php-fcgi
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: php-fcgi initscript
+# Description:       Custom php-fcgi initscript for Froxlor    
+### END INIT INFO
+
 BIND="127.0.0.1:8888"
 USER="www-data"
 PHP_FCGI_CHILDREN="15"
@@ -361,7 +371,7 @@ exit "$RETVAL"
 					<command><![CDATA[echo "include \"{{settings.system.bindconf_directory}}froxlor_bind.conf\";" >> /etc/bind/named.conf.local]]></command>
 					<command><![CDATA[touch {{settings.system.bindconf_directory}}froxlor_bind.conf]]></command>
 					<command><![CDATA[chown bind:0 {{settings.system.bindconf_directory}}froxlor_bind.conf]]></command>
-					<command><![CDATA[chmod 0600 {{settings.system.bindconf_directory}}froxlor_bind.conf]]></command>
+					<command><![CDATA[chmod 0644 {{settings.system.bindconf_directory}}froxlor_bind.conf]]></command>
 					<command><![CDATA[/etc/init.d/bind9 restart]]></command>
 				</daemon>
 				<daemon name="powerdns" title="PowerDNS via bind-backend">
