@@ -19,15 +19,21 @@
  * Function checkIPConfigured
  *
  * Checks whether an ip is actually configured on any interface on
- * the current host
+ * the current host. Also takes into account FROXLOR_NODE_IPS environment
+ * variable, if it is defined.
  *
  * @param string ip
  *
  * @return true if ip is configured, false otherwise
  */
 function checkIPConfigured($ip) {
-	// @todo: does this work on all supported distributions? BSD?
-	$all_ips = preg_split('/\s+/', `hostname --all-ip-addresses`);
+
+	$ips_env = getenv('FROXLOR_NODE_IPS');
+	if ($ips_env!=false && strlen($ips_env)>0) {
+		$all_ips = preg_split('/[,;\ ]+/', $ips_env);
+	} else {
+		$all_ips = preg_split('/\s+/', `hostname --all-ip-addresses`);
+	}
 	return array_search($ip, $all_ips) !== FALSE;
 }
 

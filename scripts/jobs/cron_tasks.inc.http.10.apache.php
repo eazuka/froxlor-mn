@@ -148,7 +148,7 @@ class apache extends HttpConfigBase {
 			}
 
 			if (!checkIPConfigured($row_ipsandports['ip'])) {
-				print "skipping unconfigured ip " . $row_ipsandports['ip'];
+				// skip, it's not meant for us
 				continue;
 			}
 
