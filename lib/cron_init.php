@@ -44,7 +44,16 @@ if (isset($argv) && is_array($argv) && count($argv) > 1) {
 		}
 	}
 }
-$lockdir = '/var/run/';
+
+// /var/run is only writeable by root, others should use /run/user/{pid}
+// NOTE: this is primarily for development/testing; actual production instances
+//       MUST run the script as root
+$uid = posix_getuid();
+if ($uid==0) {
+	$lockdir = '/var/run/';
+} else {
+	$lockdir = sprintf('/run/user/%u/', $uid);
+}
 $lockFilename = 'froxlor_' . $basename . '.lock-';
 $lockfName = $lockFilename . getmypid();
 $lockfile = $lockdir . $lockfName;
