@@ -28,7 +28,7 @@
  */
 function checkIPConfigured($ip) {
 
-	$ips_env = getenv('FROXLOR_NODE_IPS');
+	$ips_env = getenv('FROXLOR_NODE_IP');
 	if ($ips_env!=false && strlen($ips_env)>0) {
 		$all_ips = preg_split('/[,;\ ]+/', $ips_env);
 	} else {

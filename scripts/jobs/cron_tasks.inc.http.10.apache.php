@@ -144,7 +144,7 @@ class apache extends HttpConfigBase {
 			if (filter_var($row_ipsandports['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 				$ipport = '[' . $row_ipsandports['ip'] . ']:' . $row_ipsandports['port'];
 			} else {
-				$ipport = $row_ipsandports['ip'] . ':' . $row_ipsandports['port'];
+				$ipport = getListenIP($row_ipsandports['ip']) . ':' . $row_ipsandports['port'];
 			}
 
 			if (!checkIPConfigured($row_ipsandports['ip'])) {
@@ -712,7 +712,7 @@ class apache extends HttpConfigBase {
 			}
 
 			$ipport = '';
-			$domain['ip'] = $ipandport['ip'];
+			$domain['ip'] = getListenIP($ipandport['ip']);
 			$domain['port'] = $ipandport['port'];
 			if ($domain['ssl'] == '1') {
 				$domain['ssl_cert_file'] = $ipandport['ssl_cert_file'];
