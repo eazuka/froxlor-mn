@@ -216,6 +216,11 @@ return array (
 					'required_resources' => 'change_serversettings',
 				),
 				array (
+					'url' => 'admin_nodes.php?page=nodes',
+					'label' => $lng['admin']['nodes']['nodes'],
+					'required_resources' => 'change_serversettings',
+				),
+				array (
 					'url' => 'admin_ipsandports.php?page=ipsandports',
 					'label' => $lng['admin']['ipsandports']['ipsandports'],
 					'required_resources' => 'change_serversettings',

@@ -244,3 +244,27 @@ if (!MN_getVersion()) {
 	// add multinode version
 	Settings::AddNew('multinode.version', '0.0.1.0');
 }
+
+if (MN_getVersion()==array(0,0,1,0)) {
+	showUpdateStep("Updating to multinode 0.0.2.0", false);
+	Database::query("CREATE TABLE `panel_nodes` (
+  		`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  		`name` varchar(64) NOT NULL,
+  		`image_name` varchar(128) NOT NULL,
+  		`image_tag` varchar(128) DEFAULT 'latest' NOT NULL,
+  		PRIMARY KEY (`id`)
+		) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;");
+	Database::query("CREATE TABLE `panel_nodetoip` (
+  		`id_node` int(11) unsigned NOT NULL,
+  		`id_ipandport` int(11) unsigned NOT NULL,
+  		PRIMARY KEY (`id_node`,`id_ipandport`),
+  		FOREIGN KEY `fk_node` (id_node)
+  			REFERENCES panel_nodes(id)
+    		ON UPDATE CASCADE ON DELETE CASCADE,
+  		FOREIGN KEY `fk_ipandport` (id_ipandport)
+  			REFERENCES panel_ipsandports(id)
+    		ON UPDATE CASCADE ON DELETE CASCADE
+		) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;");
+
+	Settings::Set('multinode.version', '0.0.2.0');
+}

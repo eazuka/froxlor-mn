@@ -221,7 +221,7 @@ function MN_setVersion($new_version) {
  * @return true if there are updates to do for MultiNode, false if not
  */
 function MN_hasUpdates() {
-	include('lib/mn-version.php');
+	include_once('lib/mn-version.php');
 	$mn_version = explode('.', MULTINODE_VERSION);
 	$db_version = Settings::Get('multinode.version');
 	if (!$db_version)

@@ -609,7 +609,7 @@ INSERT INTO `panel_settings` (`settinggroup`, `varname`, `value`) VALUES
 	('panel', 'password_special_char_required', '0'),
 	('panel', 'password_special_char', '!?<>§$%+#=@'),
 	('panel', 'version', '0.9.34'),
-  ('multinode', 'version', '0.0.1.0');
+  ('multinode', 'version', '0.0.2.0');
 
 DROP TABLE IF EXISTS `panel_tasks`;
 CREATE TABLE `panel_tasks` (
@@ -925,3 +925,26 @@ CREATE TABLE IF NOT EXISTS `panel_domaintoip` (
     REFERENCES panel_ipsandports(id)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
+
+DROP TABLE IF EXISTS `panel_nodes`;
+CREATE TABLE `panel_nodes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(64) NOT NULL,
+  `image_name` varchar(128) NOT NULL,
+  `image_tag` varchar(128) DEFAULT 'latest' NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
+
+DROP TABLE IF EXISTS `panel_nodetoip`;
+CREATE TABLE `panel_nodetoip` (
+  `id_node` int(11) unsigned NOT NULL,
+  `id_ipandport` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id_node`,`id_ipandport`),
+  FOREIGN KEY `fk_node` (id_node)
+  REFERENCES panel_nodes(id)
+    ON UPDATE CASCADE ON DELETE CASCADE,
+  FOREIGN KEY `fk_ipandport` (id_ipandport)
+  REFERENCES panel_ipsandports(id)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;
+

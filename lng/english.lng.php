@@ -1855,3 +1855,15 @@ $lng['admin']['mod_fcgid_umask']['title'] = 'Umask (default: 022)';
 
 // Added in Froxlor 0.9.35
 $lng['serversettings']['customerdir_group_webserver'] = "<strong>Use webserver group for customer directory</strong><br>Sets <code>user:webserver</code> as owner for customer folders (instead of <code>user:user</code>)";
+
+// multinode
+$lng['admin']['nodes']['nodes'] = 'Nodes';
+$lng['admin']['nodes']['node'] = 'Node';
+$lng['admin']['nodes']['add'] = 'Add Node';
+$lng['admin']['nodes']['edit'] = 'Edit Node';
+$lng['admin']['nodes']['name'] = 'Name';
+$lng['admin']['nodes']['image'] = 'Image';
+$lng['admin']['nodes']['tag'] = 'Tag';
+$lng['admin']['nodes']['ipandport_multi']['title'] = 'IPs/Ports';
+$lng['error']['nodeexists'] = 'A node with that name already exists';
+$lng['question']['admin_node_reallydelete'] = 'Really delete node "%s"?';
