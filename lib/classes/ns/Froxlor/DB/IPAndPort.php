@@ -127,12 +127,11 @@ class IPAndPort extends ModelBase
      */
     public $domains;
 
-    /**
+	/**
      * Constructor
      */
     public function __construct()
     {
         $this->idDomain = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 }

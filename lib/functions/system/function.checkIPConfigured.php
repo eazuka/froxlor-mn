@@ -18,9 +18,9 @@
 /**
  * Function checkIPConfigured
  *
- * Checks whether an ip is actually configured on any interface on
- * the current host. Also takes into account FROXLOR_NODE_IPS environment
- * variable, if it is defined.
+ * Checks whether $ip is actually configured for this node.
+ *
+ *
  *
  * @param string ip
  *
@@ -28,7 +28,7 @@
  */
 function checkIPConfigured($ip) {
 
-	$ips_env = getenv('FROXLOR_NODE_IP');
+	$ips_env = getenv('FROXLOR_NODE_NAME');
 	if ($ips_env!=false && strlen($ips_env)>0) {
 		$all_ips = preg_split('/[,;\ ]+/', $ips_env);
 	} else {

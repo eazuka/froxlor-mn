@@ -252,17 +252,18 @@ if (MN_getVersion()==array(0,0,1,0)) {
   		`name` varchar(64) NOT NULL,
   		`image_name` varchar(128) NOT NULL,
   		`image_tag` varchar(128) DEFAULT 'latest' NOT NULL,
+  		`is_default` tinyint(1) DEFAULT '0',
   		PRIMARY KEY (`id`)
 		) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;");
-	Database::query("CREATE TABLE `panel_nodetoip` (
+	Database::query("CREATE TABLE `panel_nodetodomain` (
   		`id_node` int(11) unsigned NOT NULL,
-  		`id_ipandport` int(11) unsigned NOT NULL,
-  		PRIMARY KEY (`id_node`,`id_ipandport`),
+  		`id_domain` int(11) unsigned NOT NULL,
+  		PRIMARY KEY (`id_node`,`id_domain`),
   		FOREIGN KEY `fk_node` (id_node)
   			REFERENCES panel_nodes(id)
     		ON UPDATE CASCADE ON DELETE CASCADE,
-  		FOREIGN KEY `fk_ipandport` (id_ipandport)
-  			REFERENCES panel_ipsandports(id)
+  		FOREIGN KEY `fk_domain` (id_domain)
+  			REFERENCES panel_domains(id)
     		ON UPDATE CASCADE ON DELETE CASCADE
 		) ENGINE=InnoDB CHARSET=utf8 COLLATE=utf8_general_ci;");
 

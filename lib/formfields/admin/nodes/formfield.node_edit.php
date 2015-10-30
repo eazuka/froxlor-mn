@@ -41,18 +41,28 @@ return array(
 						'type' => 'text',
 						'value' => $result['image_tag'],
 						'size' => 5
+					),
+					'is_default' => array(
+						'label' => $lng['admin']['nodes']['default']['title'],
+						'desc' => $lng['admin']['nodes']['default']['description'],
+						'type' => 'checkbox',
+						'value' => $result['is_default'],
+						'values' => array(
+							array ('label' => $lng['panel']['yes'], 'value' => '1')
+						),
+						'size' => 5
 					)
 				)
 			),
 			'section_b' => array(
-				'title' => 'IPs/Ports',
+				'title' => 'Domains',
 				'image' => 'todo',
 				'fields' => array(
-					'ipandport' => array(
-						'label' => $lng['admin']['nodes']['ipandport_multi']['title'],
+					'domain' => array(
+						'label' => $lng['admin']['nodes']['domain_multi']['title'],
 						'type' => 'checkbox',
-						'values' => $ipsandports,
-						'value' => $usedips,
+						'values' => $domains,
+						'value' => $useddomains,
 						'is_array' => 1,
 						'mandatory' => true
 					)

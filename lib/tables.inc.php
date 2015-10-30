@@ -51,6 +51,6 @@ define('TABLE_PANEL_DOMAINREDIRECTS', 'domain_redirect_codes');
 define('TABLE_PANEL_DOMAIN_SSL_SETTINGS', 'domain_ssl_settings');
 define('TABLE_DOMAINTOIP', 'panel_domaintoip');
 define('TABLE_NODES', 'panel_nodes');
-define('TABLE_NODETOIP', 'panel_nodetoip');
+define('TABLE_NODETODOMAIN', 'panel_nodetodomain');
 
 require dirname(__FILE__).'/version.inc.php';

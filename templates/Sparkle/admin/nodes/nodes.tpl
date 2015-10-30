@@ -25,8 +25,10 @@ $header
 					<thead>
 						<tr>
 							<th>{$lng['admin']['nodes']['name']}&nbsp;{$arrowcode['name']}</th>
-							<th>{$lng['admin']['nodes']['image']}&nbsp;{$arrowcode['image']}</th>
+                            <th>{$lng['admin']['nodes']['default']['title']}&nbsp;{$arrowcode['is_default']}</th>
+                            <th>{$lng['admin']['nodes']['image']}&nbsp;{$arrowcode['image']}</th>
                             <th>{$lng['admin']['nodes']['tag']}&nbsp;{$arrowcode['tag']}</th>
+                            <th>{$lng['admin']['nodes']['domains']}</th>
                             <th>{$lng['panel']['options']}</th>
 						</tr>
 					</thead>

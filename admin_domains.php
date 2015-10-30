@@ -19,6 +19,7 @@
 
 define('AREA', 'admin');
 require './lib/init.php';
+require './lib/doctrine_init.php';
 
 if (isset($_POST['id'])) {
 	$id = intval($_POST['id']);
@@ -141,6 +142,13 @@ if ($page == 'domains'
 				$row = htmlentities_array($row);
 				// display a nice list of IP's
 				$row['ipandport'] = str_replace("\n", "<br />", $row['ipandport']);
+				// display the node(s), too
+				$domain = $em->getRepository('Froxlor\DB\Domain')->find($row['id']);
+				$row['nodes'] = '';
+				foreach($domain->getNodes($em) as $node) {
+					$row['nodes'].= $node->name . "<br>";
+				}
+
 				eval("\$domains.=\"" . getTemplate("domains/domains_domain") . "\";");
 				$count++;
 			}

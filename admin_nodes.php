@@ -1,24 +1,14 @@
 <?php
 
-/**
- * This file is part of the Froxlor project.
- * Copyright (c) 2003-2009 the SysCP Team (see authors).
- * Copyright (c) 2010 the Froxlor Team (see authors).
- *
- * For the full copyright and license information, please view the COPYING
- * file that was distributed with this source code. You can also view the
- * COPYING file online at http://files.froxlor.org/misc/COPYING.txt
- *
- * @copyright  (c) the authors
- * @author     Florian Lippert <flo@syscp.org> (2003-2009)
- * @author     Froxlor team <team@froxlor.org> (2010-)
- * @license    GPLv2 http://files.froxlor.org/misc/COPYING.txt
- * @package    Panel
- *
- */
+// TODO
+//   * don't list domains which are alias etc.
+//       => we must define which domains not to list
+//   * allow selecting domains on node creation
+//
 
 define('AREA', 'admin');
 require './lib/init.php';
+require './lib/doctrine_init.php';
 
 if (isset($_POST['id'])) {
 	$id = intval($_POST['id']);
@@ -35,6 +25,7 @@ if ($page == 'nodes'
 		$log->logAction(ADM_ACTION, LOG_NOTICE, "viewed admin_nodes");
 		$fields = array(
 			'name' => $lng['admin']['nodes']['name'],
+			'is_default' => $lng['admin']['nodes']['default']['title'],
 			'image' => $lng['admin']['nodes']['image'],
 			'tag' => $lng['admin']['nodes']['tag']
 		);
@@ -54,6 +45,11 @@ if ($page == 'nodes'
 
 			if ($paging->checkDisplay($i)) {
 				$row = htmlentities_array($row);
+				$node = $em->getRepository('Froxlor\DB\Node')->find($row['id']);
+				$row['domains'] = '';
+				foreach($node->domains as $domain) {
+					$row['domains'].= $domain->getName() . '<br>';
+				}
 				eval("\$nodes.=\"" . getTemplate("nodes/node") . "\";");
 				$count++;
 			}
@@ -79,13 +75,7 @@ if ($page == 'nodes'
 				);
 				Database::pexecute($del_stmt, array('id' => $id));
 
-				/*
-				// also, remove connections to domains (multi-stack)
-				$del_stmt = Database::prepare("
-									DELETE FROM `" . TABLE_DOMAINTOIP . "` WHERE `id_ipandports` = :id"
-				);
-				Database::pexecute($del_stmt, array('id' => $id));
-				*/
+				// note: nodetodomain entries are deleted by ON CASCADE DELETE automatically
 				$log->logAction(ADM_ACTION, LOG_WARNING, 'deleted node "' . $result['name'] . '"');
 				inserttask('1');
 
@@ -151,23 +141,23 @@ if ($page == 'nodes'
 		);
 		$result = Database::pexecute_first($result_stmt, array('id' => $id));
 
-		$ipsandports = array();
-		$usedips = array();
+		$domains = array();
+		$useddomains = array();
 
 		$stmt = Database::query(
-			"SELECT `id`, `ip`, `port` FROM `" . TABLE_PANEL_IPSANDPORTS . "` ORDER BY `ip`, `port` ASC");
+			"SELECT `id`, `domain` FROM `" . TABLE_PANEL_DOMAINS . "` ORDER BY `domain` ASC");
 
 		Database::pexecute($stmt);
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$ipsandports[] = array('label' => $row['ip'] . ':' . $row['port'] . '<br />', 'value' => $row['id']);
+			$domains[] = array('label' => $idna_convert->decode($row['domain']) . '<br />', 'value' => $row['id']);
 		}
 
 		$stmt = Database::prepare(
-			"SELECT `id_ipandport` FROM `" . TABLE_NODETOIP . "` WHERE `id_node` = :id");
+			"SELECT `id_domain` FROM `" . TABLE_NODETODOMAIN . "` WHERE `id_node` = :id");
 
 		Database::pexecute($stmt, array('id'=>$id));
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$usedips[] = $row['id_ipandport'];
+			$useddomains[] = $row['id_domain'];
 		}
 
 		if (isset($_POST['send'])
@@ -176,19 +166,20 @@ if ($page == 'nodes'
 			$name = $_POST['name'];
 			$image = $_POST['image'];
 			$tag = $_POST['tag'];
+			$is_default = $_POST['is_default'];
 
-			$selectedips = array_key_exists('ipandport', $_POST)?$_POST['ipandport']:array();
+			$selecteddomains = array_key_exists('domain', $_POST)?$_POST['domain']:array();
 
 			// delete every IPPORT in $usedips which is not in $selectedips
-			$stmt = Database::prepare("DELETE FROM " . TABLE_NODETOIP . " WHERE `id_node` = :id_node AND `id_ipandport` = :del_id");
-			foreach(array_diff($usedips, $selectedips) as $del_id) {
+			$stmt = Database::prepare("DELETE FROM " . TABLE_NODETODOMAIN . " WHERE `id_node` = :id_node AND `id_domain` = :del_id");
+			foreach(array_diff($useddomains, $selecteddomains) as $del_id) {
 				Database::pexecute($stmt, array('id_node'=>$id,'del_id'=>$del_id));
 			}
 
 			// add every IPPORT in $selectedips which is not in $usedips
-			$stmt = Database::prepare("INSERT INTO " . TABLE_NODETOIP . " SET `id_node`= :id_node, `id_ipandport`= :id_ipandport");
-			foreach(array_diff($selectedips, $usedips) as $id_ipandport) {
-					Database::pexecute($stmt, array('id_node'=>$id,'id_ipandport'=>$id_ipandport));
+			$stmt = Database::prepare("INSERT INTO " . TABLE_NODETODOMAIN . " SET `id_node`= :id_node, `id_domain`= :id_domain");
+			foreach(array_diff($selecteddomains, $useddomains) as $id_domain) {
+					Database::pexecute($stmt, array('id_node'=>$id,'id_domain'=>$id_domain));
 			}
 
 			$result_checkfordouble_stmt = Database::prepare("
@@ -202,13 +193,14 @@ if ($page == 'nodes'
 				$upd_stmt = Database::prepare("
 					UPDATE `" . TABLE_NODES . "`
 					SET
-						`name` = :name, `image_name` = :image, `image_tag` = :tag
+						`name` = :name, `image_name` = :image, `image_tag` = :tag, `is_default` = :default
 					WHERE `id` = :id;
 				");
 				$upd_data = array(
 					'name' => $name,
 					'image' => $image,
 					'tag' => $tag,
+					'default' => $is_default,
 					'id' => $id
 				);
 				Database::pexecute($upd_stmt, $upd_data);

@@ -295,6 +295,25 @@ class Domain extends ModelBase
      */
 	public $ipAndPorts;
 
+	/**
+	 * @var \Doctrine\Common\Collections\Collection
+	 *
+	 * Nodes to which this Domain is directly assigned. Note that this is the
+	 * raw database value; it does not take default nodes and inheritance into
+	 * account.
+	 *
+	 * @ORM\ManyToMany(targetEntity="Node", inversedBy="idDomain")
+	 * @ORM\JoinTable(name="panel_nodetodomain",
+	 *   joinColumns={
+	 *     @ORM\JoinColumn(name="id_domain", referencedColumnName="id")
+	 *   },
+	 *   inverseJoinColumns={
+	 *     @ORM\JoinColumn(name="id_node", referencedColumnName="id")
+	 *   }
+	 * )
+	 */
+	public $nodes;
+
     /**
      * Constructor
      */
@@ -302,7 +321,54 @@ class Domain extends ModelBase
     {
         $this->redirectCodes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->ipAndports = new \Doctrine\Common\Collections\ArrayCollection();
+	    $this->nodes = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+	/**
+	 * @return string IDN-decoded name
+	 */
+	public function getName() {
+		$converter = new \idna_convert_wrapper();
+		return $converter->decode($this->domain);
+	}
+
+	/**
+	 * get the "master" domain, e.g. the domain for which this domain is parent or alias
+	 *
+	 * @return Domain "master" domain or null
+	 */
+	public function getParentOrAlias() {
+		if ($this->aliasFor)
+			return $this->aliasFor;
+		if ($this->parentDomain)
+			return $this->parentDomain;
+		if ($this->parentForMainDomain)
+			return $this->parentForMainDomain;
+		return null;
+	}
+
+	/**
+	 * get a list of nodes on which this domain is generated. Returns $nodes if
+	 * this is not empty, otherwise we return a list of default nodes.
+	 *
+	 * @return array list of nodes to generate for
+	 */
+	public function getNodes($em)
+	{
+		if ($this->nodes->count()>0) {
+			return $this->nodes;
+		} else {
+			$master = $this->getParentOrAlias();
+			if ($master) {
+				// if this domain has a master, use its nodes
+				return $master->getNodes($em);
+			} else {
+				// return the default nodes
+				return $em->createQuery('SELECT n FROM Froxlor\DB\Node n WHERE n.isDefault=1')
+						  ->getResult();
+			}
+		}
+	}
 
 	public static function getNaturalKeyMapping() {
 		return array( 'adminid' => array('admin', 'loginname'),
