@@ -123,7 +123,7 @@ class IPAndPort extends ModelBase
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Domain", mappedBy="idIpandports")
+     * @ORM\ManyToMany(targetEntity="Domain", mappedBy="ipAndPorts")
      */
     public $domains;
 
@@ -132,6 +132,10 @@ class IPAndPort extends ModelBase
      */
     public function __construct()
     {
-        $this->idDomain = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->domains = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+	public function toString() {
+		return $this->ip . ':' . $this->port;
+	}
 }

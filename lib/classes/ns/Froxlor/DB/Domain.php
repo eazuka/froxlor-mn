@@ -320,7 +320,7 @@ class Domain extends ModelBase
     public function __construct()
     {
         $this->redirectCodes = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->ipAndports = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ipAndPorts = new \Doctrine\Common\Collections\ArrayCollection();
 	    $this->nodes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
