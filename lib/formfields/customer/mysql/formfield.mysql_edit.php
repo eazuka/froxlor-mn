@@ -32,12 +32,6 @@ return array(
                         'type' => 'text',
                         'value' => $result['description']
                     ),
-                    'mysql_server' => array(
-                        'visible' => (1 < $count_mysqlservers ? true : false),
-                        'label' => $lng['mysql']['mysql_server'],
-                        'type' => 'label',
-                        'value' => $sql_root['caption']
-                    ),
                     'mysql_password' => array(
                         'label' => $lng['changepassword']['new_password_ifnotempty'],
                         'type' => 'password',
