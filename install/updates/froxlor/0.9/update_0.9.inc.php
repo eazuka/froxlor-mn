@@ -3004,3 +3004,13 @@ if (isFroxlorVersion('0.9.34-dev4')) {
 
     updateToVersion('0.9.34');
 }
+
+// docker virtual port extension
+if (isFroxlorVersion('0.9.34')) {
+
+	showUpdateStep("Updating from 0.9.34 to 0.9.34-x1");
+	Database::query("ALTER TABLE `".TABLE_PANEL_IPSANDPORTS."` ADD `virtual_port` varchar(5) DEFAULT '' AFTER `docroot`");
+	lastStepStatus(0);
+
+	updateToVersion('0.9.34-x1');
+}

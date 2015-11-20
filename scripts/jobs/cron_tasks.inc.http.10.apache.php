@@ -147,6 +147,12 @@ class apache extends HttpConfigBase {
 				$ipport = $row_ipsandports['ip'] . ':' . $row_ipsandports['port'];
 			}
 
+			// if a virtual port is defined, we don't listen on the external IP/Port,
+			// but instead on the virtual port (for all interfaces)
+			if ($row_ipsandports['virtual_port']) {
+				$ipport = '*:' . $row_ipsandports['virtual_port'];
+			}
+
 			fwrite($this->debugHandler, '  apache::createIpPort: creating ip/port settings for  ' . $ipport . "\n");
 			$this->logger->logAction(CRON_ACTION, LOG_INFO, 'creating ip/port settings for  ' . $ipport);
 			$vhosts_filename = makeCorrectFile(Settings::Get('system.apacheconf_vhost') . '/10_froxlor_ipandport_' . trim(str_replace(':', '.', $row_ipsandports['ip']), '.') . '.' . $row_ipsandports['port'] . '.conf');
@@ -702,8 +708,13 @@ class apache extends HttpConfigBase {
 		while ($ipandport = $result_stmt->fetch(PDO::FETCH_ASSOC)) {
 
 			$ipport = '';
-			$domain['ip'] = $ipandport['ip'];
-			$domain['port'] = $ipandport['port'];
+			if ($ipandport['virtual_port']) {
+				$domain['ip'] = '*';
+				$domain['port'] = $ipandport['virtual_port'];
+			} else {
+				$domain['ip'] = $ipandport['ip'];
+				$domain['port'] = $ipandport['port'];
+			}
 			if ($domain['ssl'] == '1') {
 				$domain['ssl_cert_file'] = $ipandport['ssl_cert_file'];
 				$domain['ssl_key_file'] = $ipandport['ssl_key_file'];
@@ -722,7 +733,6 @@ class apache extends HttpConfigBase {
 			} else {
 				$ipport = $domain['ip'].':'.$domain['port'].' ';
 			}
-
 			if ($ipandport['default_vhostconf_domain'] != '') {
 				$_vhost_content .= $this->processSpecialConfigTemplate(
 										$ipandport['default_vhostconf_domain'],

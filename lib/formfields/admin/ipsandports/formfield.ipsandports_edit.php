@@ -34,7 +34,13 @@ return array(
 						'type' => 'text',
 						'value' => $result['port'],
 						'size' => 5
-					)
+					),
+					'virtual_port' => array(
+						'label' => $lng['admin']['virtualport']['label'],
+						'desc' => $lng['admin']['virtualport']['desc'],
+						'type' => 'text',
+					'size' => 5
+					),
 				)
 			),
 			'section_b' => array(

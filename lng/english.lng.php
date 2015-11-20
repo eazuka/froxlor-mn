@@ -1852,3 +1852,7 @@ $lng['admin']['specialsettings_replacements'] = "You can use the following varia
 $lng['serversettings']['default_vhostconf']['description'] = 'The content of this field will be included into this ip/port vHost container directly. '.$lng['admin']['specialsettings_replacements'].' Attention: The code won\'t be checked for any errors. If it contains errors, webserver might not start again!';
 $lng['serversettings']['default_vhostconf_domain']['description'] = 'The content of this field will be included into the domain vHost container directly. '.$lng['admin']['specialsettings_replacements'].' Attention: The code won\'t be checked for any errors. If it contains errors, webserver might not start again!';
 $lng['admin']['mod_fcgid_umask']['title'] = 'Umask (default: 022)';
+
+// added in 0.9.34-x1
+$lng['admin']['virtualport']['label'] = 'Virtual Port';
+$lng['admin']['virtualport']['desc'] = 'If set, use this port for Listen and VirtualHost statement (instead of the actual IP:Port)';
