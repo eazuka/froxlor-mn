@@ -26,7 +26,8 @@ $header
 						<tr>
 							<th>{$lng['admin']['ipsandports']['ip']}&nbsp;{$arrowcode['ip']}</th>
 							<th>{$lng['admin']['ipsandports']['port']}&nbsp;{$arrowcode['port']}</th>
-							<th>Listen</th>
+                            <th>Virtual Port</th>
+                            <th>Listen</th>
 							<th>NameVirtualHost</th>
 							<th>vHost-Container</th>
 							<th>Specialsettings</th>

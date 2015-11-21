@@ -1,6 +1,7 @@
 <tr>
 	<td>{$row['ip']}</td>
 	<td>{$row['port']}</td>
+    <td>{$row['virtual_port']}</td>
 	<td><if $row['listen_statement']=='1'>{$lng['panel']['yes']}<else>{$lng['panel']['no']}</if></td>
 	<td><if $row['namevirtualhost_statement']=='1'>{$lng['panel']['yes']}<else>{$lng['panel']['no']}</if></td>
 	<td><if $row['vhostcontainer']=='1'>{$lng['panel']['yes']}<else>{$lng['panel']['no']}</if></td>

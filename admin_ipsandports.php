@@ -144,7 +144,7 @@ if ($page == 'ipsandports'
 
 			$ip = validate_ip($_POST['ip']);
 			$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
-			$virtualport = validate($_POST['virtual_port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
+			$virtualport = validate($_POST['virtual_port'], 'virtual_port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
 			$listen_statement = isset($_POST['listen_statement']) ? 1 : 0;
 			$namevirtualhost_statement = isset($_POST['namevirtualhost_statement']) ? 1 : 0;
 			$vhostcontainer = isset($_POST['vhostcontainer']) ? 1 : 0;
@@ -286,7 +286,7 @@ if ($page == 'ipsandports'
 
 				$ip = validate_ip($_POST['ip']);
 				$port = validate($_POST['port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
-				$virtualport = validate($_POST['virtual_port'], 'port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
+				$virtualport = validate($_POST['virtual_port'], 'virtual_port', '/^(([1-9])|([1-9][0-9])|([1-9][0-9][0-9])|([1-9][0-9][0-9][0-9])|([1-5][0-9][0-9][0-9][0-9])|(6[0-4][0-9][0-9][0-9])|(65[0-4][0-9][0-9])|(655[0-2][0-9])|(6553[0-5]))$/Di', array('stringisempty', 'myport'));
 				$listen_statement = isset($_POST['listen_statement']) ? 1 : 0;
 				$namevirtualhost_statement = isset($_POST['namevirtualhost_statement']) ? 1 : 0;
 				$vhostcontainer = isset($_POST['vhostcontainer']) ? 1 : 0;
