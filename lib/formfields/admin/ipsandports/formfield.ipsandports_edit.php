@@ -39,7 +39,8 @@ return array(
 						'label' => $lng['admin']['virtualport']['label'],
 						'desc' => $lng['admin']['virtualport']['desc'],
 						'type' => 'text',
-					'size' => 5
+						'value' => $result['virtual_port'],
+						'size' => 5
 					),
 				)
 			),
